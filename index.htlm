@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#173521">
+  <meta name="description" content="Sondage Gaïa Farm — Plateforme agricole conçue avec et pour les exploitants.">
+  <title>Gaïa Farm — Sondage agricole | Yaniel Labs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #3d8a52;
+      --green-dark: #2f6b40;
+      --deep: #173521;
+      --ink: #111815;
+      --muted: #6b756e;
+      --line: #dfe6df;
+      --soft: #f1f7f1;
+      --bg: #f7faf7;
+      --surface: #ffffff;
+      --danger: #b91c1c;
+      --danger-soft: #fef2f2;
+      --radius: 18px;
+      --radius-sm: 12px;
+      --shadow: 0 6px 28px rgba(23, 53, 33, 0.07);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.55;
+      min-height: 100vh;
+      min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+    button, input, select, textarea { font: inherit; }
+    .wrap {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 24px 24px calc(64px + var(--safe-bottom));
+    }
+    /* ——— Header ——— */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0 28px;
+    }
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .wordmark {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      display: flex;
+      gap: 3px;
+    }
+    .wordmark b:first-child { color: var(--ink); }
+    .wordmark b:last-child { color: var(--green); }
+    .byline {
+      font-size: 0.7rem;
+      color: var(--muted);
+      border-left: 1px solid var(--line);
+      padding-left: 12px;
+      font-weight: 500;
+    }
+    .header-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    /* ——— Screens ——— */
+    .screen { display: none; }
+    .screen.active {
+      display: block;
+      animation: fadeUp 0.35s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* ——— Hero / Intro ——— */
+    .hero {
+      padding: 48px 0 32px;
+      max-width: 640px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 18px;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5.5vw, 3rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.045em;
+      margin-bottom: 18px;
+      max-width: 16ch;
+    }
+    .hero p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.65;
+      max-width: 46ch;
+      margin-bottom: 32px;
+    }
+    .btn-start {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--deep);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 15px 22px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(23, 53, 33, 0.2);
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .btn-start:hover {
+      background: #0f2418;
+      transform: translateY(-1px);
+    }
+    .btn-start:active { transform: translateY(0); }
+    .btn-start span {
+      color: #9dcea6;
+      font-size: 1.1em;
+    }
+    .hero-meta {
+      margin-top: 28px;
+      font-size: 0.8rem;
+      color: #8a948c;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+    .hero-meta span {
+      color: var(--green);
+    }
+    /* ——— Progress ——— */
+    .wizard-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 10px;
+    }
+    .step-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: var(--green);
+      text-transform: uppercase;
+    }
+    .step-name {
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .progress {
+      height: 4px;
+      background: #e5ece5;
+      border-radius: 99px;
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+    .progress-fill {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: var(--green);
+      border-radius: 99px;
+      transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    /* ——— Card / Question ——— */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 26px 24px;
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .card.shake-error {
+      border-color: #fca5a5;
+      box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.18);
+      animation: shake 0.4s ease;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+    .qno {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--green);
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .card h2 {
+      font-size: clamp(1.15rem, 3.5vw, 1.35rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+    .hint {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+    .optional-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--muted);
+      background: var(--soft);
+      border-radius: 6px;
+      padding: 2px 8px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .field-error {
+      display: none;
+      margin-top: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--danger);
+      background: var(--danger-soft);
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .field-error.show {
+      display: block;
+      animation: fadeUp 0.25s ease;
+    }
+    /* ——— Options ——— */
+    .options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .options.two-cols {
+      grid-template-columns: 1fr 1fr;
+    }
+    .option {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 12px 13px;
+      min-height: 48px;
+      font-size: 0.875rem;
+      font-weight: 550;
+      cursor: pointer;
+      transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease, color 0.18s ease;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .option:hover {
+      border-color: #a7c1ac;
+      background: #fafcf9;
+    }
+    .option:focus-within {
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+    }
+    .option input {
+      position: absolute;
+      opacity: 0;
+      width: 1px;
+      height: 1px;
+      pointer-events: none;
+    }
+    .option::before {
+      content: '';
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      border: 1.5px solid #b6c1b8;
+      border-radius: 50%;
+      transition: all 0.18s ease;
+      background: #fff;
+      flex-shrink: 0;
+    }
+    .option.checkbox::before {
+      border-radius: 4px;
+    }
+    .option.selected {
+      background: #edf6ed;
+      border-color: #6c9c75;
+      color: #1a3d24;
+      box-shadow: 0 0 0 3px rgba(61, 138, 82, 0.1);
+    }
+    .option.selected::before {
+      background: var(--green);
+      border-color: var(--green);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+      background-size: 11px;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .multi-count {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 10px;
+      font-weight: 500;
+    }
+    .multi-count strong {
+      color: var(--green);
+    }
+    /* ——— Text inputs ——— */
+    textarea, input[type="text"] {
+      width: 100%;
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      background: #fff;
+      outline: none;
+      font-size: 0.95rem;
+      color: var(--ink);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+    textarea:focus, input[type="text"]:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(61, 138, 82, 0.12);
+    }
+    textarea.error-border,
+    input.error-border {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.12);
+    }
+    textarea::placeholder {
+      color: #9aa29c;
+    }
+    .char-hint {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 6px;
+      text-align: right;
+    }
+    /* ——— Navigation ——— */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 20px;
+      position: sticky;
+      bottom: calc(14px + var(--safe-bottom));
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 10px 32px rgba(23, 53, 33, 0.1);
+      z-index: 10;
+    }
+    .btn {
+      border: none;
+      border-radius: 11px;
+      padding: 12px 18px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+      font-family: inherit;
+      min-height: 44px;
+    }
+    .btn.secondary {
+      background: #e9eee9;
+      color: var(--ink);
+    }
+    .btn.secondary:hover:not(:disabled) {
+      background: #dfe5df;
+    }
+    .btn.primary {
+      background: var(--deep);
+      color: #fff;
+      flex: 1;
+      max-width: 240px;
+      margin-left: auto;
+    }
+    .btn.primary:hover:not(:disabled) {
+      background: #0f2418;
+      transform: translateY(-1px);
+    }
+    .btn.primary:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    /* ——— Error / Loading ——— */
+    .error {
+      display: none;
+      background: var(--danger-soft);
+      color: var(--danger);
+      padding: 12px 14px;
+      border-radius: 12px;
+      margin-top: 14px;
+      font-size: 0.875rem;
+      border: 1px solid #fecaca;
+    }
+    .error.show { display: block; }
+    .loading {
+      display: none;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 12px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .loading.show { display: flex; }
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--line);
+      border-top-color: var(--green);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    /* ——— Thanks ——— */
+    .thanks {
+      text-align: center;
+      padding: 52px 28px 44px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-top: 12px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .check {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #e7f3e9;
+      color: var(--green);
+      display: grid;
+      place-items: center;
+      margin: 0 auto 22px;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+    .thanks h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+    .thanks p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 380px;
+      margin: 0 auto 8px;
+      line-height: 1.6;
+    }
+    .thanks .project {
+      margin-top: 28px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+    }
+    .thanks .project strong {
+      display: block;
+      font-size: 1rem;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    /* ——— Footer ——— */
+    footer {
+      text-align: center;
+      color: #9aa29c;
+      font-size: 0.7rem;
+      padding: 36px 0 8px;
+      font-weight: 500;
+      line-height: 1.6;
+    }
+    footer .group {
+      display: block;
+      margin-top: 4px;
+      color: #7a857c;
+      font-weight: 600;
+    }
+    /* ——— Responsive ——— */
+    @media (min-width: 768px) {
+      .wrap {
+        max-width: 920px;
+        padding: 36px 40px calc(72px + var(--safe-bottom));
+      }
+      .hero {
+        padding: 64px 0 40px;
+        max-width: 680px;
+      }
+      .card {
+        padding: 32px 30px;
+      }
+    }
+    @media (max-width: 560px) {
+      .wrap {
+        padding: 16px 16px calc(48px + var(--safe-bottom));
+      }
+      .byline { display: none; }
+      .options.two-cols {
+        grid-template-columns: 1fr;
+      }
+      .btn.primary {
+        max-width: none;
+      }
+      .hero {
+        padding: 28px 0 20px;
+      }
+      .hero h1 {
+        font-size: 1.85rem;
+      }
+      .nav {
+        bottom: calc(10px + var(--safe-bottom));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="wordmark"><b>Yaniel</b><b>Labs</b></div>
+        <div class="byline">By Yaniel Studio</div>
+      </div>
+      <span class="header-meta">Étude terrain · Agriculture</span>
+    </header>
+
+    <!-- INTRO -->
+    <section class="screen active" id="intro">
+      <div class="hero">
+        <div class="eyebrow">Projet Gaïa Farm</div>
+        <h1>Votre exploitation mérite de meilleurs outils.</h1>
+        <p>Nous concevons Gaïa Farm, une plateforme pensée pour aider les exploitants à mieux suivre leurs terres, cultures, équipes, ressources, récoltes et finances.</p>
+        <button type="button" class="btn-start" id="startSurvey">
+          Commencer le sondage <span>→</span>
+        </button>
+        <p class="hero-meta">
+          <span>5–7 min</span> · Agriculture · Recherche Yaniel Labs
+        </p>
+      </div>
+    </section>
+
+    <!-- SURVEY FORM -->
+    <form class="screen" id="survey" novalidate>
+      <div class="wizard-top">
+        <div class="step-label"><span id="stepNumber">1</span> / <span id="stepTotal">14</span></div>
+        <div class="step-name" id="stepName">PROFIL</div>
+      </div>
+      <div class="progress"><i class="progress-fill" id="progressBar"></i></div>
+      <div id="pages"></div>
+      <div class="error" id="errorMsg">Une erreur est survenue. Vérifiez votre connexion puis réessayez.</div>
+      <div class="loading" id="loading"><span class="spinner"></span> Envoi en cours...</div>
+      <div class="nav">
+        <button type="button" class="btn secondary" id="prev" aria-label="Question précédente">← Retour</button>
+        <button type="button" class="btn primary" id="next">Continuer →</button>
+      </div>
+    </form>
+
+    <!-- THANKS -->
+    <section class="screen" id="thanks">
+      <div class="thanks">
+        <div class="check">✓</div>
+        <h2>Merci pour votre contribution.</h2>
+        <p>Vos réponses aideront Yaniel Studio à concevoir Gaïa Farm autour des réalités des exploitants agricoles.</p>
+        <div class="project">
+          <strong>Gaïa Farm</strong>
+          <span class="hint" style="margin:0">Un sondage de Yaniel Labs · By Yaniel Studio</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Yaniel Labs · Gaïa Farm · By Yaniel Studio
+      <span class="group">Yaniel Group</span>
+    </footer>
+  </div>
+
+  <script>
+    // === URL Google Apps Script ===
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyC27cmCByeTeKP6qomh5d-YTWmqbEbzev77mwRe_g9QyYdvBwbhb3wXtOLNyfHwosp/exec";
+
+    const questions = [
+      ["PROFIL", "Vous êtes…", "Quel est votre rôle principal dans l’activité agricole ?", "single", "profil",
+        ["Agriculteur / exploitant", "Responsable de ferme", "Chef d’exploitation", "Technicien / conseiller agricole", "Ouvrier / responsable d’équipe", "Autre"]],
+      ["PROFIL", "Depuis combien de temps travaillez-vous dans l’agriculture ?", "", "single", "experience",
+        ["Moins de 2 ans", "2 à 5 ans", "6 à 10 ans", "Plus de 10 ans"]],
+      ["EXPLOITATION", "Quelle est la taille de votre exploitation ?", "Choisissez la tranche qui correspond le mieux.", "single", "surface",
+        ["Moins de 1 ha", "1 à 5 ha", "5 à 20 ha", "20 à 100 ha", "Plus de 100 ha"]],
+      ["EXPLOITATION", "Quelles activités pratiquez-vous ?", "Plusieurs réponses possibles.", "multi", "activites",
+        ["Cultures vivrières", "Maraîchage", "Arboriculture / vergers", "Plantations / cultures pérennes", "Élevage", "Exploitation mixte", "Autre"]],
+      ["EXPLOITATION", "Votre exploitation est-elle répartie sur plusieurs sites ?", "", "single", "sites",
+        ["Oui, plusieurs sites", "Non, un seul site"]],
+      ["GESTION", "Qu’est-ce qui vous pose le plus de difficultés ?", "Plusieurs réponses possibles.", "multi", "problemes",
+        ["Suivre l’exploitation à distance", "Informations dispersées", "Suivre les travaux réalisés", "Organiser les travailleurs", "Anticiper selon la météo", "Gérer l’irrigation", "Suivre les stocks / matériel", "Mesurer les pertes", "Suivre coûts et bénéfices", "Retrouver l’historique"], true],
+      ["GESTION", "Quel est votre plus gros problème aujourd’hui ?", "Quelques mots suffisent (minimum 3 caractères).", "text", "probleme_principal", []],
+      ["OUTILS", "Comment gérez-vous actuellement vos informations ?", "Plusieurs réponses possibles.", "multi", "outils",
+        ["Cahier / carnet", "WhatsApp", "Excel / tableur", "Application agricole", "Notes du téléphone", "Aucun outil structuré", "Autre"], true],
+      ["OUTILS", "Comment est votre connexion sur le terrain ?", "", "single", "connexion",
+        ["Très bonne", "Bonne", "Moyenne", "Faible", "Très faible / souvent absente"], true],
+      ["BESOINS", "Qu’aimeriez-vous pouvoir faire avec Gaïa Farm ?", "Plusieurs réponses possibles.", "multi", "fonctions",
+        ["Carte et suivi des parcelles", "Suivi des cultures et cycles", "Planning et journal des travaux", "Météo et alertes", "Irrigation et besoins en eau", "Gestion des travailleurs", "Stocks, intrants et matériel", "Récoltes et rendements", "Ventes et acheteurs", "Dépenses, revenus et rentabilité", "Fonctionner sans Internet", "Rapports / exports"], true],
+      ["BESOINS", "Parmi ces besoins, lequel serait le plus important pour vous ?", "Un seul choix.", "single", "priorite",
+        ["Suivre mon exploitation", "Mieux suivre mes cultures", "Mieux gérer mes travailleurs", "Maîtriser stocks et ressources", "Comprendre ma rentabilité", "Autre"]],
+      ["MODÈLE ÉCONOMIQUE", "Seriez-vous prêt à payer pour un tel outil ?", "Nous cherchons un modèle économique réaliste pour les exploitants.", "single", "pret_a_payer",
+        ["Oui, si l’outil m’apporte une vraie valeur", "Peut-être, selon le prix et les fonctionnalités", "Non"]],
+      ["MODÈLE ÉCONOMIQUE", "Quel prix mensuel vous semblerait acceptable ?", "Pour un outil réellement utile à votre exploitation.", "single", "prix_mensuel",
+        ["Gratuit uniquement", "5 000 – 10 000 FCFA / mois", "10 000 – 15 000 FCFA / mois", "15 000 – 20 000 FCFA / mois", "20 000 – 25 000 FCFA / mois", "Plus de 25 000 FCFA / mois"], true],
+      ["POUR FINIR", "Une dernière chose à nous dire ?", "Qu’est-ce que Gaïa Farm devrait absolument réussir pour vous ?", "text", "attente_principale", [], true] // true = optional
+    ];
+
+    const pagesEl = document.getElementById("pages");
+    const total = questions.length;
+    document.getElementById("stepTotal").textContent = total;
+
+    // Build pages
+    questions.forEach((q, i) => {
+      const [cat, title, desc, type, name, opts, forceTwoColsOrOptional] = q;
+      const isOptional = type === "text" && forceTwoColsOrOptional === true;
+      const forceTwoCols = type !== "text" && forceTwoColsOrOptional === true;
+
+      const sec = document.createElement("section");
+      sec.className = "page";
+      sec.dataset.category = cat;
+      sec.dataset.index = i;
+      sec.dataset.type = type;
+      sec.dataset.name = name;
+      sec.dataset.optional = isOptional ? "1" : "0";
+      sec.style.display = "none";
+
+      let html = `
+        <div class="card">
+          <div class="qno">${String(i + 1).padStart(2, "0")}</div>
+          <h2>${title}${isOptional ? '<span class="optional-badge">Optionnel</span>' : ''}</h2>
+          ${desc ? `<p class="hint">${desc}</p>` : ""}
+      `;
+
+      if (type === "text") {
+        html += `<textarea name="${name}" placeholder="Votre réponse…" rows="4" aria-label="${title}"></textarea>`;
+        if (name === "probleme_principal") {
+          html += `<div class="char-hint" id="char-hint-${i}">0 caractère</div>`;
+        }
+      } else {
+        const twoCols = forceTwoCols || (opts.length >= 4 && type === "single") ? " two-cols" : "";
+        html += `<div class="options${twoCols}" role="group" aria-label="${title}">`;
+        opts.forEach((o, oi) => {
+          const inputType = type === "single" ? "radio" : "checkbox";
+          const extraClass = type === "multi" ? " checkbox" : "";
+          const id = `${name}_${oi}`;
+          html += `
+            <label class="option${extraClass}" for="${id}">
+              <input type="${inputType}" name="${name}" id="${id}" value="${o.replace(/"/g, "&quot;")}">
+              <span>${o}</span>
+            </label>`;
+        });
+        html += `</div>`;
+        if (type === "multi") {
+          html += `<div class="multi-count" id="count-${i}"><strong>0</strong> sélectionné(s)</div>`;
+        }
+      }
+
+      html += `<div class="field-error" id="err-${i}" role="alert">Veuillez sélectionner une réponse pour continuer.</div>`;
+      html += `</div>`;
+      sec.innerHTML = html;
+      pagesEl.appendChild(sec);
+    });
+
+    // Option selection + multi count
+    document.querySelectorAll(".option").forEach(opt => {
+      const input = opt.querySelector("input");
+      if (!input) return;
+
+      // Use change for both radio and checkbox (more reliable)
+      input.addEventListener("change", () => {
+        if (input.type === "radio") {
+          document.querySelectorAll(`input[name="${input.name}"]`).forEach(i => {
+            i.closest(".option").classList.remove("selected");
+          });
+          opt.classList.add("selected");
+        } else {
+          opt.classList.toggle("selected", input.checked);
+          // Update multi-count
+          const page = opt.closest(".page");
+          const countEl = page.querySelector(".multi-count");
+          if (countEl) {
+            const n = page.querySelectorAll('input[type="checkbox"]:checked').length;
+            countEl.innerHTML = `<strong>${n}</strong> sélectionné${n > 1 ? "s" : ""}`;
+          }
+        }
+        // Clear error as soon as user selects something
+        hideErrorsOnPage(opt.closest(".page"));
+      });
+    });
+
+    // Char counter for required text
+    document.querySelectorAll("textarea[name='probleme_principal']").forEach(ta => {
+      ta.addEventListener("input", () => {
+        const len = ta.value.trim().length;
+        const page = ta.closest(".page");
+        const hint = page.querySelector(".char-hint");
+        if (hint) {
+          hint.textContent = len === 0 ? "0 caractère" : `${len} caractère${len > 1 ? "s" : ""}`;
+          if (len >= 3) hideErrorsOnPage(page);
+        }
+      });
+    });
+
+    // Navigation state
+    let current = 0;
+    let busy = false;
+    const pages = [...pagesEl.querySelectorAll(".page")];
+    const prevBtn = document.getElementById("prev");
+    const nextBtn = document.getElementById("next");
+
+    function hideErrorsOnPage(page) {
+      if (!page) return;
+      const err = page.querySelector(".field-error");
+      if (err) err.classList.remove("show");
+      const card = page.querySelector(".card");
+      if (card) card.classList.remove("shake-error");
+      const textarea = page.querySelector("textarea");
+      if (textarea) textarea.classList.remove("error-border");
+    }
+
+    function hideAllErrors() {
+      document.querySelectorAll(".field-error").forEach(el => el.classList.remove("show"));
+      document.querySelectorAll(".card").forEach(c => c.classList.remove("shake-error"));
+      document.querySelectorAll("textarea").forEach(t => t.classList.remove("error-border"));
+    }
+
+    function showError(msg) {
+      const page = pages[current];
+      const card = page.querySelector(".card");
+      const err = page.querySelector(".field-error");
+      if (err) {
+        err.textContent = msg || "Veuillez sélectionner une réponse pour continuer.";
+        err.classList.add("show");
+      }
+      if (card) {
+        card.classList.add("shake-error");
+        setTimeout(() => card.classList.remove("shake-error"), 500);
+      }
+      const textarea = page.querySelector("textarea");
+      if (textarea) {
+        textarea.classList.add("error-border");
+        textarea.focus();
+      }
+    }
+
+    function show(i) {
+      hideAllErrors();
+      current = Math.max(0, Math.min(i, total - 1));
+      pages.forEach((p, n) => {
+        p.style.display = n === current ? "block" : "none";
+      });
+      document.getElementById("stepNumber").textContent = current + 1;
+      document.getElementById("stepName").textContent = pages[current].dataset.category;
+      document.getElementById("progressBar").style.width = ((current + 1) / total * 100) + "%";
+      prevBtn.style.visibility = current === 0 ? "hidden" : "visible";
+      nextBtn.innerHTML = current === total - 1 ? "Envoyer mes réponses ✓" : "Continuer →";
+      nextBtn.disabled = false;
+
+      // Focus management for accessibility
+      const firstFocusable = pages[current].querySelector("input, textarea, .option");
+      if (firstFocusable) {
+        // slight delay so animation finishes
+        setTimeout(() => {
+          if (firstFocusable.tagName === "TEXTAREA" || firstFocusable.tagName === "INPUT") {
+            firstFocusable.focus({ preventScroll: true });
+          }
+        }, 50);
+      }
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function isValid() {
+      const page = pages[current];
+      const type = page.dataset.type;
+      const name = page.dataset.name;
+      const optional = page.dataset.optional === "1";
+
+      if (type === "single") {
+        return !!page.querySelector(`input[name="${name}"]:checked`);
+      }
+      if (type === "multi") {
+        return page.querySelectorAll(`input[name="${name}"]:checked`).length > 0;
+      }
+      if (type === "text") {
+        if (optional) return true;
+        // probleme_principal requires >= 3 chars
+        const val = page.querySelector("textarea").value.trim();
+        return val.length >= 3;
+      }
+      return true;
+    }
+
+    // Start
+    document.getElementById("startSurvey").addEventListener("click", () => {
+      document.getElementById("intro").classList.remove("active");
+      document.getElementById("survey").classList.add("active");
+      show(0);
+    });
+
+    prevBtn.addEventListener("click", () => {
+      if (busy) return;
+      show(current - 1);
+    });
+
+    nextBtn.addEventListener("click", async () => {
+      if (busy) return;
+
+      if (!isValid()) {
+        const page = pages[current];
+        const type = page.dataset.type;
+        if (type === "text") {
+          showError("Décrivez brièvement votre principal problème (au moins 3 caractères).");
+        } else if (type === "multi") {
+          showError("Sélectionnez au moins une option pour continuer.");
+        } else {
+          showError("Veuillez sélectionner une réponse pour continuer.");
+        }
+        return;
+      }
+
+      if (current < total - 1) {
+        show(current + 1);
+        return;
+      }
+
+      // === Submit ===
+      busy = true;
+      nextBtn.disabled = true;
+      prevBtn.disabled = true;
+      document.getElementById("errorMsg").classList.remove("show");
+      document.getElementById("loading").classList.add("show");
+
+      const obj = { timestamp: new Date().toISOString() };
+      const formData = new FormData(document.getElementById("survey"));
+
+      // Collect multi-values correctly
+      for (const [k, v] of formData.entries()) {
+        if (obj[k]) {
+          obj[k] = obj[k] + " | " + v;
+        } else {
+          obj[k] = v;
+        }
+      }
+
+      // Ensure empty optional text is still sent as empty string
+      if (!obj.attente_principale) obj.attente_principale = "";
+
+      try {
+        localStorage.setItem("gaiaFarmSurveyDraft", JSON.stringify(obj));
+      } catch (e) {}
+
+      try {
+        if (GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("COLLE_ICI")) {
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+            },
+            body: new URLSearchParams(obj).toString()
+          });
+        }
+
+        // Success path
+        document.getElementById("survey").classList.remove("active");
+        document.getElementById("thanks").classList.add("active");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+
+        // Clear draft on success
+        try { localStorage.removeItem("gaiaFarmSurveyDraft"); } catch (e) {}
+      } catch (e) {
+        document.getElementById("errorMsg").classList.add("show");
+        busy = false;
+        nextBtn.disabled = false;
+        prevBtn.disabled = false;
+      } finally {
+        document.getElementById("loading").classList.remove("show");
+      }
+    });
+
+    // Keyboard: Enter on radio/checkbox options advances if valid (optional convenience)
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && document.getElementById("survey").classList.contains("active")) {
+        const active = document.activeElement;
+        if (active && (active.tagName === "TEXTAREA")) return; // allow new lines
+        if (active && active.closest(".option")) {
+          e.preventDefault();
+          nextBtn.click();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
